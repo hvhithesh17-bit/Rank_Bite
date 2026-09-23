@@ -1,13 +1,19 @@
 package com.rankbite.gui;
 
+import com.rankbite.service.AnalyticsService;
+import com.rankbite.service.ReportService;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class ReportsFrame extends JFrame {
     private JTextArea reportArea;
+    private ReportService reportService;
 
     public ReportsFrame() {
-        setTitle("RankBite - Reports (Placeholder)");
+        reportService = new ReportService(new AnalyticsService());
+
+        setTitle("RankBite - System Reports");
         setSize(700, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -20,7 +26,7 @@ public class ReportsFrame extends JFrame {
         reportArea = new JTextArea();
         reportArea.setEditable(false);
         reportArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        reportArea.setText("Click 'Generate Report' to load data...");
+        reportArea.setText("Click 'Generate Report' to load data from MySQL...\n(Ensure DatabaseConnection credentials are correct)");
         add(new JScrollPane(reportArea), BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel();
@@ -38,13 +44,25 @@ public class ReportsFrame extends JFrame {
         closeBtn.addActionListener(e -> this.dispose());
         
         generateBtn.addActionListener(e -> {
-            reportArea.setText("--- RANKBITE SYSTEM REPORT ---\n\n");
-            reportArea.append("This is a placeholder for Nikhil's Reporting Module.\n");
-            reportArea.append("Analytics data and SQL-driven insights will appear here.\n");
+            String reportText = reportService.generateOverallReportText();
+            reportArea.setText(reportText);
+            reportArea.setCaretPosition(0);
         });
         
         saveBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Report saved successfully! (Simulated)");
+            String text = reportArea.getText();
+            if (text.isEmpty() || text.startsWith("Click 'Generate Report'")) {
+                JOptionPane.showMessageDialog(this, "Please generate a report first.");
+                return;
+            }
+            
+            String filename = "overall_report_" + System.currentTimeMillis() + ".txt";
+            boolean success = reportService.saveReportToFile(text, filename);
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Report saved successfully as " + filename + " in 'reports/' directory.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to save the report.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
     }
 }

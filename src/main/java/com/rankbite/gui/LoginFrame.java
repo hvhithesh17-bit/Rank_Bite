@@ -58,13 +58,28 @@ public class LoginFrame extends JFrame {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
-        // Temporary hardcoded logic until Dhanush's DB is ready
-        if ("admin".equals(username) && "1234".equals(password)) {
+        com.rankbite.dao.UserDAO userDAO = new com.rankbite.dao.UserDAO();
+        boolean isAuthenticated = false;
+
+        // Try real database authentication
+        try {
+            isAuthenticated = userDAO.authenticate(username, password);
+        } catch (Exception ex) {
+            System.err.println("DB Auth failed, trying fallback...");
+        }
+
+        // Temporary fallback just in case the database isn't running yet during your presentation
+        if (!isAuthenticated && "admin".equals(username) && "1234".equals(password)) {
+            System.out.println("Used fallback credentials.");
+            isAuthenticated = true;
+        }
+
+        if (isAuthenticated) {
             JOptionPane.showMessageDialog(this, "Login Successful!");
             this.dispose(); // Close login frame
             new DashboardFrame().setVisible(true); // Open dashboard
         } else {
-            JOptionPane.showMessageDialog(this, "Invalid credentials. Try admin/1234", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid credentials.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
