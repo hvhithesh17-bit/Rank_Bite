@@ -1,0 +1,9 @@
+restaurantId,name,category,location,rating,averageDeliveryTime,averagePrice,orderCount
+1,Empire Restaurant,Indian,Bangalore,4.5,30,250,80
+2,Pizza House,Italian,Bangalore,4.2,25,300,90
+3,Food Palace,Multi Cuisine,Bangalore,4.8,35,200,70
+4,Biryani Zone,Indian,Bangalore,4.3,28,220,95
+5,Cafe Coffee,Fast Food,Bangalore,4.1,20,180,60
+6,Invalid Resto,Chinese,Bangalore,6.0,40,200,50
+7,Bad Price Place,Desserts,Bangalore,4.0,20,-10,40
+8,Slow Bite,South Indian,Bangalore,4.6,0,150,120
