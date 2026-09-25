@@ -1,29 +1,29 @@
 package com.rankbite.model;
 
-public class Customer {
+public class Owner {
 
-    private int customerId;
+    private int ownerId;
     private String name;
     private String email;
     private String password;
     private String phone;
 
-    public Customer() {
+    public Owner() {
     }
 
-    public Customer(String name, String email, String password, String phone) {
+    public Owner(String name, String email, String password, String phone) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public int getOwnerId() {
+        return ownerId;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getName() {
